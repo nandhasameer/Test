@@ -1,0 +1,132 @@
+Registeration
+
+*****************
+USE [WebsiteDb]
+GO
+/****** Object:  StoredProcedure [dbo].[UserRegisteration]    Script Date: 7/5/2021 4:32:47 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+ALTER PROCEDURE [dbo].[UserRegisteration] --jay ,nandha ,sameer ,1997
+     @FirstName varchar(max)
+	,@LastName varchar(max)
+	,@EmailID varchar(max)
+	,@Password nvarchar(max)
+
+
+AS
+BEGIN
+
+		IF EXISTS (SELECT * FROM [dbo].[User] WHERE  EmialID  = @EmailID  and  Password = @Password)
+		BEGIN
+		--do what you need if exists
+		 select 0 as StatusID, 'User Already Registered ' as [Message]
+		END
+		ELSE
+		BEGIN
+		--do what needs to be done if not
+		 insert into [dbo].[User]
+		  Values
+		  (@FirstName
+		  ,@LastName
+		  ,@EmailID 
+		  ,@Password 
+		  )
+	     select 1 as StatusID, 'Registered Successfully' as [Message]
+		END
+
+   
+	
+END
+
+*************************
+Login
+***********
+-- =============================================
+ALTER PROCEDURE [dbo].[Login] --sameer,nandha
+	-- Add the parameters for the stored procedure here
+	(
+	@EmailID  varchar(max)
+	,@Password varchar(max)
+	)
+AS
+BEGIN
+	
+
+	IF EXISTS (SELECT * FROM [dbo].[User] WHERE  EmialID  = @EmailID and  Password = @Password)
+		BEGIN
+		--do what you need if exists
+		 select 1 as StatusID, 'Login Successfully' as [Message]
+		 SELECT FirstName ,LastName FROM [dbo].[User] WHERE  EmialID  = @EmailID and  Password = @Password
+		END
+		ELSE
+		BEGIN
+		--do what needs to be done if not
+		 select 0 as StatusID, 'Login Failed Please Enter Correct UserDetails' as [Message]
+		END
+ 
+END
+
+*******************
+Change Password
+****************
+ALTER PROCEDURE  [dbo].[ChangePassword] --'nsameer97@gmail.com' ,'123457','123456'
+	-- Add the parameters for the stored procedure here
+	(
+	@EmailID varchar(max),
+	@OldPassword varchar(max),
+	@NewPassword varchar(max)
+	)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	IF EXISTS (SELECT * FROM [dbo].[User] WHERE  EmialID  = @EmailID  and  Password = @OldPassword)
+		BEGIN
+		--do what you need if exists
+		 
+		 UPDATE [dbo].[User] SET Password = @NewPassword 
+	     WHERE EmialID = @EmailID and Password =@OldPassword
+
+		 SELECT Password FROM [dbo].[User] 
+		 select 1 as StatusID, 'Update Password Successfully' as [Message]
+		END
+		ELSE
+		BEGIN
+		--do what needs to be done if not		
+	     select 0 as StatusID, 'Verify your Email or Password' as [Message]
+		END
+END
+**************************************
+Forgot Password
+*********************
+ALTER PROCEDURE [dbo].[ForgetPassword]
+	-- Add the parameters for the stored procedure here
+	(
+	@EmailID varchar(max)
+	)
+AS
+BEGIN
+	
+	IF EXISTS (SELECT * FROM [dbo].[User] WHERE  EmialID = @EmailID)
+		BEGIN
+		--do what you need if exists
+		select 1 as StatusID, 'Verified User' as [Message]
+		 SELECT Password  FROM [dbo].[User] WHERE  EmialID = @EmailID 
+		END
+		ELSE
+		BEGIN
+		--do what needs to be done if not
+		 select 0 as StatusID, 'Please Verify Your Email' as [Message]
+		END
+ 
+END
+
+*****************************************
+
