@@ -1,0 +1,39 @@
+﻿
+
+@model IEnumerable<WebApplication14.Models.RegisterationInfo>
+
+    @using (Html.BeginForm("Welcome", "HelloWorld", FormMethod.Post))
+    {
+        <span>First Name:</span> @Html.TextBox("FirstName")
+        <span>Last Name:</span> @Html.TextBox("LastName")
+        <span>EmailID:</span> @Html.TextBox("EmailID")
+        <span>Password:</span> @Html.TextBox("Password")
+        <input type="submit" value="Search" />
+        <br />
+        <br />
+        <br />
+    }
+    <h2>List of Employee</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.FirstName)</th>
+                <th>@Html.DisplayNameFor(m => m.LastName)</th>
+                <th>@Html.DisplayNameFor(m => m.EmailID)</th>
+                <th>@Html.DisplayNameFor(m => m.Password)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var emp in Model)
+            {
+                <tr>
+                    <td>@emp.FirstName</td>
+                    <td>@emp.LastName</td>
+                    <td>@emp.EmailID</td>
+                    <td>@emp.Password</td>
+
+                </tr>
+
+            }
+        </tbody>
+    </table>
