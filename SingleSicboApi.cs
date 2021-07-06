@@ -11,8 +11,8 @@ namespace SingleSicbo.WinForms.API
     {
 
         string SingleSicboApiUrl = ConfigurationManager.AppSettings["SingleSicboApiUrl"];
-
-
+       //<add key="SingleSicboApiUrl" value="https://localhost:44376/api/SingleSicbo/" />
+       //Above Api HTTP Format [HttpGet("XYZ_Method Name")]
 
         internal Status InsertBetandWontransaction(InsertBetWonViewModel insertBetWonViewModel)
         {
